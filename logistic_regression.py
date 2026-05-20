@@ -1,8 +1,3 @@
-# ============================================================
-#  Customer Churn Analysis — Logistic Regression Model
-#  Dataset : telco_churn.csv
-#  Author  : (Your Name)
-# ============================================================
 
 import pandas as pd
 import numpy as np
@@ -19,7 +14,7 @@ from sklearn.metrics import (
 import warnings
 warnings.filterwarnings('ignore')
 
-# ── Style ────────────────────────────────────────────────────
+# Style
 plt.rcParams.update({
     'figure.facecolor': '#0A0E1A', 'axes.facecolor':  '#111827',
     'axes.edgecolor':   '#1F2937', 'axes.labelcolor': '#E5E7EB',
@@ -33,7 +28,7 @@ ACCENT_COLOR = '#FEB019'
 BLUE_COLOR   = '#008FFB'
 PURPLE_COLOR = '#775DD0'
 
-# ── 1. Load & Preprocess ──────────────────────────────────────
+#  1. Load & Preprocess
 df = pd.read_csv('telco_churn.csv')
 df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
 df.dropna(inplace=True)
@@ -41,9 +36,9 @@ df.dropna(inplace=True)
 print("=" * 55)
 print("  CUSTOMER CHURN — LOGISTIC REGRESSION MODEL")
 print("=" * 55)
-print(f"\n📦 Dataset: {df.shape[0]} rows × {df.shape[1]} columns")
+print(f"\n Dataset: {df.shape[0]} rows × {df.shape[1]} columns")
 
-# ── 2. Encode Categorical Features ───────────────────────────
+#  2. Encode Categorical Features 
 le = LabelEncoder()
 cat_cols = ['gender', 'Partner', 'Dependents', 'PhoneService',
             'InternetService', 'OnlineSecurity', 'TechSupport',
@@ -62,38 +57,38 @@ feature_cols = ['gender', 'SeniorCitizen', 'Partner', 'Dependents',
 X = df_model[feature_cols]
 y = (df['Churn'] == 'Yes').astype(int)
 
-print(f"\n✅ Features used     : {len(feature_cols)}")
+print(f"\n Features used     : {len(feature_cols)}")
 print(f"   Class distribution: {y.value_counts().to_dict()}")
 print(f"   Churn rate        : {y.mean()*100:.1f}%")
 
-# ── 3. Train-Test Split ───────────────────────────────────────
+#  3. Train-Test Split
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42, stratify=y
 )
-print(f"\n📊 Train set : {X_train.shape[0]} samples")
+print(f"\n Train set : {X_train.shape[0]} samples")
 print(f"   Test set  : {X_test.shape[0]} samples")
 
-# ── 4. Scale Features ─────────────────────────────────────────
+#  4. Scale Features 
 scaler  = StandardScaler()
 X_train_sc = scaler.fit_transform(X_train)
 X_test_sc  = scaler.transform(X_test)
 
-# ── 5. Train Model ────────────────────────────────────────────
+#  5. Train Model 
 # class_weight='balanced' handles imbalanced dataset automatically
 model = LogisticRegression(
     class_weight='balanced',
     max_iter=1000,
     random_state=42,
-    C=1.0                    # Regularization strength
+    C=1.0                   
 )
 model.fit(X_train_sc, y_train)
-print("\n✅ Model trained successfully!")
+print("\n Model trained successfully!")
 
-# ── 6. Predictions ────────────────────────────────────────────
+# 6. Predictions 
 y_pred       = model.predict(X_test_sc)
 y_pred_proba = model.predict_proba(X_test_sc)[:, 1]
 
-# ── 7. Evaluation Metrics ─────────────────────────────────────
+#  7. Evaluation Metrics
 accuracy  = accuracy_score(y_test, y_pred)
 precision = precision_score(y_test, y_pred)
 recall    = recall_score(y_test, y_pred)
@@ -109,21 +104,21 @@ print(f"  Recall    : {recall*100:.1f}%")
 print(f"  F1-Score  : {f1*100:.1f}%")
 print(f"  AUC-ROC   : {auc:.3f}")
 print("=" * 40)
-print(f"\n📋 Classification Report:\n{classification_report(y_test, y_pred, target_names=['Retained','Churned'])}")
+print(f"\n Classification Report:\n{classification_report(y_test, y_pred, target_names=['Retained','Churned'])}")
 
 # ── 8. Cross-Validation ───────────────────────────────────────
 cv_scores = cross_val_score(model, scaler.fit_transform(X), y, cv=5, scoring='roc_auc')
-print(f"🔁 5-Fold Cross-Val AUC: {cv_scores.mean():.3f} ± {cv_scores.std():.3f}")
+print(f" 5-Fold Cross-Val AUC: {cv_scores.mean():.3f} ± {cv_scores.std():.3f}")
 
-# ── 9. Feature Importance (Coefficients) ─────────────────────
+# 9. Feature Importance (Coefficients
 importance_df = pd.DataFrame({
     'Feature':    feature_cols,
     'Coefficient': model.coef_[0]
 }).sort_values('Coefficient', ascending=False)
-print(f"\n📌 Top 5 Churn Drivers:\n{importance_df.head().to_string(index=False)}")
-print(f"\n📌 Top 5 Retention Drivers:\n{importance_df.tail().to_string(index=False)}")
+print(f"\n Top 5 Churn Drivers:\n{importance_df.head().to_string(index=False)}")
+print(f"\n Top 5 Retention Drivers:\n{importance_df.tail().to_string(index=False)}")
 
-# ── 10. High-Risk Customer Identification ─────────────────────
+#  10. High-Risk Customer Identification 
 X_test_df = X_test.copy()
 X_test_df['ChurnProbability'] = y_pred_proba
 X_test_df['ActualChurn']      = y_test.values
@@ -134,12 +129,10 @@ high_risk = (
     .sort_values('ChurnProbability', ascending=False)
     [['CustomerID', 'ChurnProbability', 'ActualChurn']]
 )
-print(f"\n⚠️  High-Risk Customers (prob ≥ 80%): {len(high_risk)}")
+print(f"\n  High-Risk Customers (prob ≥ 80%): {len(high_risk)}")
 print(high_risk.head(10).to_string(index=False))
-
-# ============================================================
+=
 #  PLOTS
-# ============================================================
 fig = plt.figure(figsize=(18, 12))
 fig.suptitle('Logistic Regression — Model Results',
              fontsize=16, fontweight='bold', color='#E5E7EB')
@@ -165,7 +158,7 @@ ax1.set_xticks([0.5, 1.5]); ax1.set_xticklabels(['Pred: No', 'Pred: Yes'])
 ax1.set_yticks([0.5, 1.5]); ax1.set_yticklabels(['Actual: Yes', 'Actual: No'])
 ax1.set_title('Confusion Matrix', fontsize=12, pad=12)
 
-# Plot 2 — ROC Curve
+# Plot 2  ROC Curve
 ax2 = fig.add_subplot(gs[0, 1])
 fpr, tpr, _ = roc_curve(y_test, y_pred_proba)
 ax2.plot(fpr, tpr, color=BLUE_COLOR, linewidth=2.5,
@@ -179,7 +172,7 @@ ax2.set_ylabel('True Positive Rate')
 ax2.legend(facecolor='#111827', edgecolor='#1F2937', labelcolor='#E5E7EB')
 ax2.grid(alpha=0.4)
 
-# Plot 3 — Metrics Bar
+# Plot 3  Metrics Bar
 ax3 = fig.add_subplot(gs[0, 2])
 metric_names = ['Accuracy', 'Precision', 'Recall', 'F1-Score', 'AUC-ROC']
 metric_vals  = [accuracy, precision, recall, f1, auc]
@@ -194,7 +187,7 @@ ax3.set_ylim(0, 1.15)
 ax3.grid(axis='y', alpha=0.4)
 ax3.tick_params(axis='x', rotation=15)
 
-# Plot 4 — Feature Importance
+# Plot 4  Feature Importance
 ax4 = fig.add_subplot(gs[1, :2])
 top_features = importance_df.head(8)
 bot_features = importance_df.tail(4)
@@ -213,7 +206,7 @@ legend_elements = [Patch(facecolor=CHURN_COLOR,  label='Increases churn risk'),
 ax4.legend(handles=legend_elements, facecolor='#111827',
            edgecolor='#1F2937', labelcolor='#E5E7EB')
 
-# Plot 5 — Churn Probability Distribution
+# Plot 5  Churn Probability Distribution
 ax5 = fig.add_subplot(gs[1, 2])
 retained_proba = y_pred_proba[y_test == 0]
 churned_proba  = y_pred_proba[y_test == 1]
@@ -237,4 +230,4 @@ print("\n✅ Model complete! Plots saved to plots/model_plots.png")
 
 # Save high-risk predictions
 high_risk.to_csv('high_risk_customers.csv', index=False)
-print("⚠️  High-risk customers saved: high_risk_customers.csv")
+print("  High-risk customers saved: high_risk_customers.csv")
