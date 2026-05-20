@@ -1,11 +1,11 @@
-# 📉 Customer Churn Analysis
+#  Customer Churn Analysis
 
 > A data-driven study on churn patterns using telecom customer data.  
 > **EDA → K-Means Clustering → Logistic Regression → High-Risk Identification**
 
 ---
 
-## 🔍 Problem Statement
+##  Problem Statement
 
 Customer churn is a critical business problem in the telecom industry. Acquiring a new customer costs **5–7× more** than retaining an existing one. This project analyzes churn behavior across 1,000+ telecom customers to:
 
@@ -16,7 +16,7 @@ Customer churn is a critical business problem in the telecom industry. Acquiring
 
 ---
 
-## 📊 Dataset
+##  Dataset
 
 | Property       | Detail                              |
 |----------------|-------------------------------------|
@@ -28,12 +28,12 @@ Customer churn is a critical business problem in the telecom industry. Acquiring
 
 **Key Features:** `tenure`, `Contract`, `PaymentMethod`, `MonthlyCharges`, `TotalCharges`, `InternetService`, `OnlineSecurity`, `TechSupport`, `StreamingTV`
 
-> 📥 **Original dataset:** [Kaggle — Telco Customer Churn](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)  
+>  **Original dataset:** [Kaggle — Telco Customer Churn](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)  
 > A sample CSV (`telco_churn.csv`) is included in this repo for quick testing.
 
 ---
 
-## 🗂️ Project Structure
+##  Project Structure
 
 ```
 customer-churn-analysis/
@@ -56,7 +56,7 @@ customer-churn-analysis/
 
 ---
 
-## ⚙️ Setup & Installation
+##  Setup & Installation
 
 ```bash
 # 1. Clone the repository
@@ -77,7 +77,7 @@ mkdir plots
 
 ---
 
-## 🚀 Usage
+##  Usage
 
 Run each script in order:
 
@@ -96,7 +96,7 @@ Each script prints results to the console and saves plots to the `plots/` folder
 
 ---
 
-## 📈 Key Findings
+##  Key Findings
 
 ### EDA
 | Factor              | Churn Rate | Insight                                      |
@@ -127,7 +127,7 @@ Each script prints results to the console and saves plots to the `plots/` folder
 
 ---
 
-## 🛠️ Technical Decisions
+##  Technical Decisions
 
 **Why Logistic Regression?**  
 Chosen for interpretability — the model's coefficients directly indicate which features drive churn, making results actionable for business stakeholders.
@@ -142,7 +142,7 @@ Determined using the Elbow Method — plotting WCSS across k=1 to 10 and selecti
 
 ---
 
-## 💡 Business Recommendations
+##  Business Recommendations
 
 1. **Contract Conversion** — Offer month-to-month customers a 15% discount to upgrade to 1-year contracts
 2. **Payment Migration** — Incentivize auto-pay (credit card/bank transfer) with $5/month discount; electronic check users churn 3× more
@@ -151,7 +151,7 @@ Determined using the Elbow Method — plotting WCSS across k=1 to 10 and selecti
 
 ---
 
-## 🧰 Tech Stack
+##  Tech Stack
 
 ![Python](https://img.shields.io/badge/Python-3.8+-blue?logo=python)
 ![Pandas](https://img.shields.io/badge/Pandas-2.0-darkblue?logo=pandas)
@@ -170,9 +170,7 @@ imbalanced-learn — SMOTE for class imbalance (optional)
 
 ---
 
-## 📄 License
 
-MIT License — free to use and modify.
 
 ---
 
